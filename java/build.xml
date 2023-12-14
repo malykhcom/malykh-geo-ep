@@ -1,0 +1,62 @@
+<!-- $Id$ -->
+
+<project name="malykh-geo-ep" default="distr" basedir=".">
+    <property name="name" value="malykh-geo"/>
+    <property name="encoding" value="UTF-8"/>
+
+    <property name="src.dir" value="source"/>
+    <property name="src.java.dir" value="${src.dir}/java"/>
+    <property name="src.res.dir" value="${src.dir}/resource"/>
+    <property name="lib.dir" value="lib"/>
+    <property name="build.dir" value="build"/>
+    <property name="build.classes.dir" value="${build.dir}/classes"/>
+    <property name="build.javadoc.dir" value="${build.dir}/doc"/>
+    <property name="distr.dir" value="distr"/>
+
+    <path id="main">
+        <fileset dir="${lib.dir}" includes="*.jar"/>
+    </path>
+
+    <target name="prepare">
+        <mkdir dir="${build.classes.dir}"/>
+        <mkdir dir="${build.javadoc.dir}"/>
+    </target>
+
+    <target name="clean">
+        <delete includeEmptyDirs="true">
+            <fileset dir="${build.dir}"/>
+        </delete>
+    </target>
+
+    <target name="compile-main" depends="prepare">
+        <depend srcdir="${src.java.dir}" destdir="${build.classes.dir}"/>
+        <javac srcdir="${src.java.dir}" destdir="${build.classes.dir}"
+               debug="on" optimize="on" deprecation="on" encoding="${encoding}"
+               classpathref="main" source="1.5" target="1.5"/>
+    </target>
+
+    <target name="copy-resources" depends="prepare">
+        <native2ascii src="${src.res.dir}" dest="${build.classes.dir}"
+                      includes="**/*.properties" encoding="${encoding}"/>
+        <copy todir="${build.classes.dir}">
+            <fileset dir="${src.res.dir}" excludes="**/*.properties"/>
+        </copy>
+    </target>
+
+    <target name="jar" depends="compile-main, copy-resources">
+        <jar jarfile="${build.dir}/${name}.jar" basedir="${build.classes.dir}"/>
+    </target>
+
+    <target name="javadoc" depends="prepare">
+        <javadoc sourcepath="${src.java.dir}" Encoding="${encoding}"
+                 destdir="${build.javadoc.dir}" docencoding="${encoding}"
+                 packagenames="com.teacode.*"
+                 classpathref="main"/>
+    </target>
+
+    <target name="distr" depends="jar">
+        <copy todir="${distr.dir}">
+            <fileset dir="${build.dir}" includes="*.jar"/>
+        </copy>
+    </target>
+</project>
