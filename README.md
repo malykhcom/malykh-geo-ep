@@ -10,5 +10,5 @@ Anton Malykh
 
 See also:
 - [Редактор точек](https://malykh.com/soft/geo-ep/)
-- [malykh-geo-ep (2009-2010) source code](https://malykh.blogspot.com/)
+- [malykh-geo-ep (2009-2010) source code](https://malykh.blogspot.com/2023/12/malykh-geo-ep-2009-2010-source-code.html)
 
